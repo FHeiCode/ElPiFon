@@ -18,6 +18,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import de.elpifon.app.R
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -25,7 +29,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.IconButton
 import androidx.compose.foundation.Image
@@ -95,6 +99,7 @@ fun HomeScreen(
             Header()
             SettingsMenu(onClick = onOpenSettings, modifier = Modifier.align(Alignment.TopEnd))
         }
+        Spacer(Modifier.height(16.dp))
 
         if (ongoingCall) {
             Text(
@@ -148,15 +153,14 @@ fun HomeScreen(
                     // Je zwei Tasten nebeneinander. Bricht ein Name auf 2 Zeilen um,
                     // wird die Nachbartaste gleich hoch.
                     val rows = contacts.chunked(2)
-                    itemsIndexed(rows, key = { _, row -> row.joinToString { it.id } }) { rowIndex, row ->
+                    items(rows, key = { row -> row.joinToString { it.id } }) { row ->
                         Row(
                             Modifier.fillMaxWidth().height(IntrinsicSize.Min),
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
-                            row.forEachIndexed { i, contact ->
+                            row.forEach { contact ->
                                 ContactTile(
                                     contact = contact,
-                                    color = Signal.tileColor(rowIndex * 2 + i),
                                     modifier = Modifier.weight(1f).fillMaxHeight(),
                                 ) {
                                     hint = "${contact.name} wird angerufen …"
@@ -180,6 +184,10 @@ fun HomeScreen(
 /** Kopfzeile, linksbündig: rundes Logo, Schriftzug „ElPiFon“ und klein „by Frank“ – unten bündig. */
 @Composable
 private fun Header() {
+    val context = LocalContext.current
+    val version = remember {
+        runCatching { context.packageManager.getPackageInfo(context.packageName, 0).versionName }.getOrNull().orEmpty()
+    }
     Row(
         // Rechts Platz lassen für die drei Punkte.
         Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp, end = 48.dp),
@@ -200,7 +208,12 @@ private fun Header() {
             modifier = Modifier.height(44.dp).width(155.dp),
         )
         Text(
-            text = "by Frank",
+            text = buildAnnotatedString {
+                append("by Frank")
+                if (version.isNotEmpty()) {
+                    withStyle(SpanStyle(fontSize = 12.sp)) { append(" v$version") }
+                }
+            },
             fontSize = 16.sp,
             maxLines = 1,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
@@ -210,14 +223,16 @@ private fun Header() {
     }
 }
 
-/** Farbige Namenstaste mit 3D-Effekt – nur der Name, ohne Bild. */
+/** Blaue Wähltaste mit weißem Rand und 3D-Effekt – nur der Name, ohne Bild. */
 @Composable
-private fun ContactTile(contact: Contact, color: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
+private fun ContactTile(contact: Contact, modifier: Modifier = Modifier, onClick: () -> Unit) {
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
     Raised3D(
-        color = color,
+        color = Signal.tile,
         pressed = pressed,
+        borderColor = Color.White,
+        borderWidth = 2.dp,
         modifier = modifier
             .heightIn(min = 92.dp)
             .clickable(interactionSource = interaction, indication = null, onClick = onClick)

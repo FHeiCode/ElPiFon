@@ -5,12 +5,10 @@
 Android-App (Kotlin, Jetpack Compose), die das Handy in ein übersichtliches Senioren-Telefon
 verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
 
-- Oben links das runde Logo, daneben der geschwungene Schriftzug **„ElPiFon“** und klein „by Frank“
-- **Farbige Namenstasten** mit 3D-Effekt, je zwei nebeneinander – nur der Name, ohne Bild.
-  Einmal antippen, und der Anruf startet sofort. Farben werden der Reihe nach vergeben
-  (Blau, Grün, Lila, Orange, Türkis, Braun; kein Rot – das gehört dem Notruf). Lange Namen
-  brechen auf zwei Zeilen um, die Nachbartaste wird dann gleich hoch. Das Kontaktfoto
-  erscheint nur noch beim Anruf
+- Oben links das runde Logo, daneben der geschwungene Schriftzug **„ElPiFon“** und klein „by Frank“ mit Versionsnummer
+- **Blaue Wähltasten** mit dünnem weißem Rand und 3D-Effekt, je zwei nebeneinander – nur der
+  Name, ohne Bild. Einmal antippen, und der Anruf startet sofort. Lange Namen brechen auf zwei
+  Zeilen um, die Nachbartaste wird dann gleich hoch. Das Kontaktfoto erscheint nur beim Anruf
 - **Roter Notruf-Knopf**: 2 Sekunden gedrückt halten (verhindert versehentliches Auslösen)
   - SMS an alle Notfallkontakte, auf Wunsch mit Standort-Link (Google Maps)
   - ist der bekannte Standort älter als 10 Minuten, wird ein aktueller gesucht und nachgeschickt

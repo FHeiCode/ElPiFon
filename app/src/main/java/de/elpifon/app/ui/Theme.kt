@@ -41,16 +41,8 @@ object Signal {
     val hint = Color(0xFFFFE082)
     val onHint = Color(0xFF111111)
 
-    /**
-     * Farben der Namenstasten, der Reihe nach vergeben (nebeneinander immer verschieden).
-     * Bewusst ohne Rot – Rot gehört dem Notruf.
-     */
-    val tiles = listOf(
-        Color(0xFF1565C0), Color(0xFF2E7D32), Color(0xFF6A1B9A),
-        Color(0xFFEF6C00), Color(0xFF00838F), Color(0xFF5D4037),
-    )
-
-    fun tileColor(index: Int): Color = tiles[index % tiles.size]
+    /** Farbe aller Wähltasten (mit dünnem weißem Rand). */
+    val tile = Color(0xFF1565C0)
 
     /** Hintergrundfarben für Kontakte ohne Foto (Anfangsbuchstabe im Kreis). */
     val avatars = listOf(

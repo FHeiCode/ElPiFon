@@ -39,6 +39,8 @@ fun Raised3D(
     modifier: Modifier = Modifier,
     corner: Dp = 20.dp,
     depth: Dp = 6.dp,
+    borderColor: Color = Color.White.copy(alpha = 0.35f),
+    borderWidth: Dp = 1.5.dp,
     content: @Composable BoxScope.() -> Unit,
 ) {
     val sink by animateDpAsState(if (pressed) depth else 0.dp, tween(durationMillis = 70), label = "sink")
@@ -60,7 +62,7 @@ fun Raised3D(
             }
             .clip(shape)
             .background(Brush.verticalGradient(listOf(top, color)))
-            .border(1.5.dp, Color.White.copy(alpha = 0.35f), shape),
+            .border(borderWidth, borderColor, shape),
         content = content,
     )
 }
