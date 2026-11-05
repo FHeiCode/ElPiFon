@@ -5,7 +5,7 @@
 Android-App (Kotlin, Jetpack Compose), die das Handy in ein übersichtliches Senioren-Telefon
 verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
 
-- Oben der geschwungene Schriftzug **„ElPiFon“**, rechts daneben klein „by Frank“
+- Oben links das runde Logo, daneben der geschwungene Schriftzug **„ElPiFon“** und klein „by Frank“
 - **Große Kontakt-Kacheln** mit Foto oder Anfangsbuchstaben – einmal antippen, und der
   Anruf startet sofort
 - **Roter Notruf-Knopf**: 2 Sekunden gedrückt halten (verhindert versehentliches Auslösen)
@@ -27,7 +27,7 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
     erste Notfallkontakt angerufen
   - ohne eingerichteten Notfallkontakt: Anruf bei der 112 (ist ElPiFon nicht die Telefon-App,
     öffnet sich die normale Telefon-App mit vorgewählter 112)
-- **Einstellungen für Angehörige** (oben rechts auf ⋮ lange drücken), optional mit PIN:
+- **Einstellungen für Angehörige** (oben rechts auf ⋮ tippen), geschützt mit PIN:
   Kontakte anlegen (auch direkt aus dem Telefonbuch, inkl. Foto), sortieren, bearbeiten,
   löschen; Notruf-Text; Standort an/aus
 - **Eigener Anruf-Bildschirm** (wenn ElPiFon als Telefon-App gewählt ist):
@@ -50,11 +50,11 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
 1. APK installieren (siehe unten) und ElPiFon öffnen.
 2. Die Fragen nach **Telefonanrufen, SMS und Standort** mit „Zulassen“ beantworten.
    Ohne Anruf-Berechtigung öffnet sich beim Antippen nur die Wähl-App (dann grünen Hörer tippen).
-3. Oben rechts auf **⋮ lange drücken** → „Kontakt hinzufügen“.
+3. Oben rechts auf **⋮** tippen → „Kontakt hinzufügen“.
    Tipp: „Aus dem Telefonbuch übernehmen“ füllt Name, Nummer und Foto aus.
 4. Mindestens einen Kontakt als **Notfallkontakt** markieren. Beim Notruf werden die
    Notfallkontakte von oben nach unten angerufen – mit den Pfeilen sortieren.
-5. Optional: PIN vergeben, damit nichts versehentlich verstellt wird.
+5. **PIN vergeben** – sonst kommt jeder mit einem Tipp auf ⋮ in die Einstellungen.
 6. Empfohlen: „ElPiFon als Telefon-App verwenden“ antippen und bestätigen. Erst dann
    erscheinen eingehende Anrufe im großen ElPiFon-Bildschirm.
    **Ab Android 15** (z. B. Moto G85) sperrt Android das für Apps, die nicht aus dem Play Store

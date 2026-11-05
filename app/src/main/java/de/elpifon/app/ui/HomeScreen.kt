@@ -1,10 +1,8 @@
 package de.elpifon.app.ui
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,9 +24,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import de.elpifon.app.R
+import androidx.compose.material3.IconButton
+import androidx.compose.foundation.Image
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.Icons
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.Row
@@ -91,11 +90,7 @@ fun HomeScreen(
     ) {
         Box(Modifier.fillMaxWidth()) {
             Header()
-            SettingsMenu(
-                onShortTap = { hint = "Einstellungen: bitte lange drücken." },
-                onLongPress = onOpenSettings,
-                modifier = Modifier.align(Alignment.TopEnd),
-            )
+            SettingsMenu(onClick = onOpenSettings, modifier = Modifier.align(Alignment.TopEnd))
         }
 
         if (ongoingCall) {
@@ -136,7 +131,7 @@ fun HomeScreen(
                 contacts == null -> Unit // lädt noch
                 contacts.isEmpty() -> Text(
                     text = "Noch keine Kontakte.\n\nFür Angehörige: oben rechts auf ⋮ " +
-                        "lange drücken und Kontakte hinzufügen.",
+                        "tippen und Kontakte hinzufügen.",
                     fontSize = 22.sp,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onBackground,
@@ -166,14 +161,21 @@ fun HomeScreen(
     }
 }
 
-/** Kopfzeile: geschwungener Schriftzug „ElPiFon“, rechts daneben unten bündig klein „by Frank“. */
+/** Kopfzeile, linksbündig: rundes Logo, Schriftzug „ElPiFon“ und klein „by Frank“ – unten bündig. */
 @Composable
 private fun Header() {
     Row(
-        Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp),
-        horizontalArrangement = Arrangement.Center,
+        // Rechts Platz lassen für die drei Punkte.
+        Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp, end = 48.dp),
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.Bottom,
     ) {
+        Image(
+            painter = painterResource(R.drawable.logo_round),
+            contentDescription = null,
+            modifier = Modifier.size(48.dp),
+        )
+        Spacer(Modifier.width(8.dp))
         Icon(
             painter = painterResource(R.drawable.elpi_wordmark),
             contentDescription = "ElPiFon",
@@ -184,6 +186,7 @@ private fun Header() {
         Text(
             text = "by Frank",
             fontSize = 16.sp,
+            maxLines = 1,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
             // Grundlinie auf Höhe der Unterkante des Schriftzugs.
             modifier = Modifier.padding(start = 6.dp).offset(y = 3.dp),
@@ -283,24 +286,13 @@ private fun EmergencyButton(onTrigger: () -> Unit, onShortTap: () -> Unit) {
     }
 }
 
-/**
- * Drei Punkte oben rechts. Öffnet die Einstellungen erst bei langem Drücken –
- * so verstellt niemand versehentlich etwas.
- */
-@OptIn(ExperimentalFoundationApi::class)
+/** Drei Punkte oben rechts: öffnet die Einstellungen (geschützt durch die PIN, falls vergeben). */
 @Composable
-private fun SettingsMenu(onShortTap: () -> Unit, onLongPress: () -> Unit, modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .size(48.dp)
-            .clip(CircleShape)
-            .combinedClickable(onClick = onShortTap, onLongClick = onLongPress)
-            .semantics { contentDescription = "Einstellungen (lange drücken)" },
-    ) {
+private fun SettingsMenu(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    IconButton(onClick = onClick, modifier = modifier.size(48.dp)) {
         Icon(
             Icons.Filled.MoreVert,
-            contentDescription = null,
+            contentDescription = "Einstellungen",
             tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f),
             modifier = Modifier.size(28.dp),
         )
