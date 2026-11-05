@@ -26,6 +26,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import de.elpifon.app.R
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.Row
 import androidx.compose.ui.res.painterResource
 import androidx.compose.material3.Icon
 import androidx.compose.foundation.layout.width
@@ -158,23 +160,27 @@ fun HomeScreen(
     }
 }
 
-/** Kopfzeile: geschwungener Schriftzug „ElPi“, darunter klein „by Frank“. */
+/** Kopfzeile: geschwungener Schriftzug „ElPi“, rechts daneben unten bündig klein „by Frank“. */
 @Composable
 private fun Header() {
-    Column(
+    Row(
         Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.Bottom,
     ) {
         Icon(
             painter = painterResource(R.drawable.elpi_wordmark),
             contentDescription = "ElPi",
-            tint = MaterialTheme.colorScheme.primary,
+            // Schwarz (im dunklen Modus weiß, damit es lesbar bleibt).
+            tint = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.height(48.dp).width(96.dp),
         )
         Text(
             text = "by Frank",
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
+            // Grundlinie auf Höhe der Unterkante des Schriftzugs.
+            modifier = Modifier.padding(start = 6.dp).offset(y = 3.dp),
         )
     }
 }
