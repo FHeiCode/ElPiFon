@@ -131,9 +131,12 @@ object PhoneActions {
             }
         }
 
-        // Der Reihe nach anrufen; nach 1 Minute ohne Antwort kommt der Nächste dran.
+        // Der Reihe nach anrufen; ohne Antwort nach der Wartezeit kommt der Nächste dran.
         // (Ist ElPiFon nicht die Telefon-App, wird nur der erste angerufen.)
-        if (!EmergencyChain.start(context, targets.map { it.number })) call(context, targets.first().number)
+        val chained = EmergencyChain.start(
+            context, targets.map { it.number }, settings.emergencyWaitSeconds, settings.emergencyRounds,
+        )
+        if (!chained) call(context, targets.first().number)
         val names = targets.joinToString { it.name }
         return if (smsSent) "Notruf-SMS an $names gesendet. ${targets.first().name} wird angerufen."
         else "${targets.first().name} wird angerufen. (SMS nicht erlaubt)"

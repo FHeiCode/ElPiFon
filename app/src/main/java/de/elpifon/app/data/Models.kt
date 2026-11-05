@@ -24,8 +24,16 @@ data class AppSettings(
     val pin: String = "",
     /** Unbekannte Nummern klingeln nicht (Anruf erscheint trotzdem). Nur als Telefon-App. */
     val silenceUnknown: Boolean = false,
+    /** Notruf-Kette: so lange klingelt es pro Kontakt, bevor der Nächste angerufen wird. */
+    val emergencyWaitSeconds: Int = DEFAULT_WAIT_SECONDS,
+    /** Notruf-Kette: so oft wird die ganze Liste der Notfallkontakte angerufen. */
+    val emergencyRounds: Int = DEFAULT_ROUNDS,
 ) {
     companion object {
+        const val DEFAULT_WAIT_SECONDS = 20
+        const val DEFAULT_ROUNDS = 3
+        val WAIT_RANGE = 10..60
+        val ROUNDS_RANGE = 1..10
         const val DEFAULT_EMERGENCY_TEXT = "Ich brauche Hilfe! Bitte ruf mich sofort zurück."
     }
 }

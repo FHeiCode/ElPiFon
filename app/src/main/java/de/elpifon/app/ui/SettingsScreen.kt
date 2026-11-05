@@ -48,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.elpifon.app.data.AppSettings
@@ -113,7 +114,7 @@ fun SettingsScreen(
             }
             item {
                 Text(
-                    "Notfallkontakte (⚠) bekommen beim Notruf eine SMS und werden von oben nach unten angerufen. Nimmt jemand nach 1 Minute nicht ab, kommt der Nächste dran.",
+                    "Notfallkontakte (⚠) bekommen beim Notruf eine SMS und werden von oben nach unten angerufen. Nimmt jemand nicht ab, kommt der Nächste dran (Einstellungen unter „Notruf“).",
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                 )
@@ -134,6 +135,30 @@ fun SettingsScreen(
                     subtitle = "Link zu Google Maps in der SMS",
                     checked = settings.sendLocation,
                     onChange = { on -> onSettingsChange { it.copy(sendLocation = on) } },
+                )
+            }
+
+            item {
+                StepperRow(
+                    title = "Klingeln pro Kontakt",
+                    subtitle = "Danach wird aufgelegt und der nächste Notfallkontakt angerufen. " +
+                        "Kürzer als die Mailbox einstellen (die springt meist nach 20–30 Sekunden an).",
+                    value = settings.emergencyWaitSeconds,
+                    range = AppSettings.WAIT_RANGE,
+                    step = 5,
+                    format = { "$it Sek." },
+                    onChange = { v -> onSettingsChange { it.copy(emergencyWaitSeconds = v) } },
+                )
+            }
+            item {
+                StepperRow(
+                    title = "Anrufrunden",
+                    subtitle = "So oft wird die ganze Liste der Notfallkontakte angerufen, bis jemand abnimmt.",
+                    value = settings.emergencyRounds,
+                    range = AppSettings.ROUNDS_RANGE,
+                    step = 1,
+                    format = { if (it == 1) "1 Runde" else "$it Runden" },
+                    onChange = { v -> onSettingsChange { it.copy(emergencyRounds = v) } },
                 )
             }
 
@@ -246,6 +271,44 @@ private fun ContactRow(
             IconButton(onClick = onEdit) {
                 Icon(Icons.Filled.Edit, contentDescription = "Bearbeiten")
             }
+        }
+    }
+}
+
+/** Zahl mit großen − / + Tasten einstellen. */
+@Composable
+private fun StepperRow(
+    title: String,
+    subtitle: String,
+    value: Int,
+    range: IntRange,
+    step: Int,
+    format: (Int) -> String,
+    onChange: (Int) -> Unit,
+) {
+    Column(Modifier.fillMaxWidth()) {
+        Text(title, fontSize = 18.sp)
+        Text(subtitle, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
+        Row(
+            Modifier.fillMaxWidth().padding(top = 6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            OutlinedButton(
+                onClick = { onChange((value - step).coerceIn(range)) },
+                enabled = value > range.first,
+            ) { Text("−", fontSize = 22.sp) }
+            Text(
+                format(value),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.width(120.dp),
+                textAlign = TextAlign.Center,
+            )
+            OutlinedButton(
+                onClick = { onChange((value + step).coerceIn(range)) },
+                enabled = value < range.last,
+            ) { Text("+", fontSize = 22.sp) }
         }
     }
 }

@@ -12,12 +12,17 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
   - SMS an alle Notfallkontakte, auf Wunsch mit Standort-Link (Google Maps)
   - ist der bekannte Standort älter als 10 Minuten, wird ein aktueller gesucht und nachgeschickt
   - danach werden die Notfallkontakte **der Reihe nach** angerufen (Reihenfolge wie in den
-    Einstellungen). Nimmt jemand nicht innerhalb von 1 Minute ab, legt ElPiFon auf und ruft
-    den Nächsten an. Sobald jemand abnimmt, endet die Kette. Nach dem letzten Kontakt hört
-    sie auf. Wer selbst auflegt, beendet die Kette ebenfalls.
+    Einstellungen). Nimmt jemand nicht innerhalb der **Wartezeit** ab (Standard 20 Sekunden,
+    einstellbar 10–60), legt ElPiFon auf und ruft den Nächsten an. Die ganze Liste wird so oft
+    angerufen, wie **Anrufrunden** eingestellt sind (Standard 3, einstellbar 1–10). Sobald
+    jemand abnimmt, endet die Kette. Wer selbst auflegt, beendet sie ebenfalls.
   - Achtung Mailbox: Nimmt die Mailbox eines Notfallkontakts ab, zählt das für das Handy als
-    „angenommen“ – die Kette endet dort. Notfallkontakte sollten ihre Mailbox deshalb
-    abschalten oder (falls der Anbieter es erlaubt) erst nach mehr als 1 Minute annehmen lassen.
+    „angenommen“ – die Kette endet dort. Android lässt Apps nicht mithören, deshalb kann
+    ElPiFon Mailbox und Mensch nicht unterscheiden. Abhilfe: Die Wartezeit kürzer einstellen,
+    als die Mailbox braucht, und die Notfallkontakte stellen ihre Mailbox auf die längste
+    Wartezeit (im Mobilfunk meist höchstens 30 Sekunden). Ist das Handy eines Notfallkontakts
+    aus, nimmt seine Mailbox sofort ab – das lässt sich nur durch Abschalten der Mailbox
+    vermeiden.
   - Die Kette funktioniert nur, wenn ElPiFon die Telefon-App ist; sonst wird nur der
     erste Notfallkontakt angerufen
   - ohne eingerichteten Notfallkontakt: Anruf bei der 112 (ist ElPiFon nicht die Telefon-App,
@@ -98,7 +103,7 @@ app/src/main/java/de/elpifon/app/
 ├── MainActivity.kt           Einstieg, Berechtigungen, Navigation, PIN-Abfrage
 ├── call/
 │   ├── ElInCallService.kt    Von Android gemeldete Anrufe (nur als Telefon-App)
-│   ├── EmergencyChain.kt     Notruf-Kette: der Reihe nach anrufen, 1 Minute warten
+│   ├── EmergencyChain.kt     Notruf-Kette: der Reihe nach, Wartezeit, Runden
 │   ├── CallManager.kt        Zustand des Gesprächs, Annehmen/Ablehnen/Auflegen
 │   ├── CallActivity.kt       Anruf-Vollbild, Sperrbildschirm, Näherungssensor
 │   └── DialerActivity.kt     Unsichtbar: Wähl-Anfragen anderer Apps

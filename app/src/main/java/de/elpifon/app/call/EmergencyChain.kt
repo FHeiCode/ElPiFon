@@ -8,14 +8,17 @@ import de.elpifon.app.data.PhoneActions
 
 /**
  * Notruf-Kette: ruft die Notfallkontakte der Reihe nach an. Wird ein Anruf nicht innerhalb
- * von einer Minute angenommen, legt ElPiFon auf und ruft den Nächsten an. Sobald jemand
+ * der eingestellten Wartezeit angenommen, legt ElPiFon auf und ruft den Nächsten an.
+ * Die ganze Liste wird so oft durchlaufen, wie Anrufrunden eingestellt sind. Sobald jemand
  * abnimmt, endet die Kette und das Gespräch läuft normal weiter.
+ *
+ * Die Wartezeit sollte kürzer sein als die Zeit, nach der die Mailbox der Notfallkontakte
+ * anspringt – sonst nimmt die Mailbox ab, und für das Handy gilt der Anruf als angenommen.
  *
  * Funktioniert nur, wenn ElPiFon die Telefon-App ist – sonst sieht ElPiFon nicht,
  * ob jemand abgenommen hat. Dann wird nur der erste Notfallkontakt angerufen.
  */
 object EmergencyChain {
-    private const val TIMEOUT_MS = 60_000L
     /** Kurze Pause zwischen zwei Anrufen. */
     private const val GAP_MS = 2_000L
     /** Erscheint nach dem Wählen gar kein Anruf (z. B. kein Netz), geht es weiter. */
@@ -24,6 +27,7 @@ object EmergencyChain {
     private val handler = Handler(Looper.getMainLooper())
     private var app: Context? = null
     private var numbers: List<String> = emptyList()
+    private var timeoutMs = 20_000L
     private var index = -1
     private var current: Call? = null
 
@@ -32,12 +36,16 @@ object EmergencyChain {
     private val timeout = Runnable { current?.disconnect() } // → onCallRemoved → nächster
     private val noCall = Runnable { next() }
 
-    /** Startet die Kette. Gibt false zurück, wenn ElPiFon nicht die Telefon-App ist. */
-    fun start(context: Context, numbers: List<String>): Boolean {
+    /**
+     * Startet die Kette: [numbers] werden [rounds]-mal der Reihe nach angerufen, jeweils
+     * höchstens [waitSeconds] lang. Gibt false zurück, wenn ElPiFon nicht die Telefon-App ist.
+     */
+    fun start(context: Context, numbers: List<String>, waitSeconds: Int, rounds: Int): Boolean {
         if (numbers.isEmpty() || !PhoneActions.isDefaultDialer(context)) return false
         stop()
         app = context.applicationContext
-        this.numbers = numbers
+        timeoutMs = waitSeconds.coerceIn(5, 120) * 1000L
+        this.numbers = List(rounds.coerceIn(1, 20)) { numbers }.flatten()
         index = 0
         dial()
         return true
@@ -63,7 +71,7 @@ object EmergencyChain {
         current = null
         index++
         if (index >= numbers.size) {
-            stop() // Alle versucht – keiner hat abgenommen.
+            stop() // Alle Runden durch – keiner hat abgenommen.
             return
         }
         handler.postDelayed({ if (isActive) dial() }, GAP_MS)
@@ -80,7 +88,7 @@ object EmergencyChain {
         }
         current = call
         handler.removeCallbacks(noCall)
-        handler.postDelayed(timeout, TIMEOUT_MS)
+        handler.postDelayed(timeout, timeoutMs)
     }
 
     fun onStateChanged(call: Call, state: Int) {
@@ -88,6 +96,6 @@ object EmergencyChain {
     }
 
     fun onCallRemoved(call: Call) {
-        if (isActive && call == current) next() // nicht abgenommen, besetzt oder nach 1 Minute aufgelegt
+        if (isActive && call == current) next() // nicht abgenommen, besetzt oder nach Ablauf der Wartezeit aufgelegt
     }
 }
