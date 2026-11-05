@@ -11,13 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.CallEnd
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -33,6 +31,14 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.elpifon.app.call.CallUi
@@ -77,26 +83,37 @@ fun CallScreen(
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(Modifier.weight(0.6f))
-        ContactAvatar(title, contact?.photo, size = 200.dp)
-        Spacer(Modifier.height(20.dp))
-        Text(
-            text = title,
-            fontSize = 42.sp,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            lineHeight = 46.sp,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
-        if (call.isRinging && !ended) {
-            Text(
-                text = "ruft an",
-                fontSize = 34.sp,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onBackground,
-            )
+        // Oben Foto und Name. Dieser Teil passt sich dem freien Platz an, damit die Tasten
+        // unten immer sichtbar bleiben – auch bei großer Schrift oder Anzeigegröße.
+        BoxWithConstraints(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
+            val avatar = minOf(200.dp, maxHeight * 0.45f, maxWidth * 0.6f)
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                if (avatar >= 48.dp) {
+                    ContactAvatar(title, contact?.photo, size = avatar)
+                    Spacer(Modifier.height(16.dp))
+                }
+                Text(
+                    text = title,
+                    fontSize = 42.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center,
+                    lineHeight = 46.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+                if (call.isRinging && !ended) {
+                    Text(
+                        text = "ruft an",
+                        fontSize = 34.sp,
+                        maxLines = 1,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onBackground,
+                    )
+                }
+            }
         }
-        Spacer(Modifier.weight(1f))
+        Spacer(Modifier.height(16.dp))
 
         when {
             ended -> Unit
@@ -112,17 +129,28 @@ fun CallScreen(
 
 @Composable
 private fun BigCallButton(label: String, icon: ImageVector, color: Color, modifier: Modifier, onClick: () -> Unit) {
-    Surface(
-        onClick = onClick,
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
+    Raised3D(
         color = color,
-        shape = RoundedCornerShape(28.dp),
+        pressed = pressed,
+        corner = 28.dp,
         modifier = modifier
-            .height(130.dp)
+            .height(136.dp)
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
             .semantics { contentDescription = label; role = Role.Button },
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Icon(icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(56.dp))
-            Text(label, color = Color.White, fontSize = 26.sp, fontWeight = FontWeight.Bold)
+            Icon(icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(52.dp))
+            Text(
+                label,
+                color = Color.White,
+                // Feste Größe, unabhängig von der Schriftgröße des Handys – passt immer in die Taste.
+                fontSize = with(LocalDensity.current) { 26.dp.toSp() },
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                style = TextStyle(shadow = TextOnColorShadow),
+            )
         }
     }
 }

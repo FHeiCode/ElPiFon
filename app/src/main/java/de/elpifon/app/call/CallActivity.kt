@@ -6,6 +6,7 @@ import android.os.PowerManager
 import android.telecom.Call
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.LaunchedEffect
@@ -51,6 +52,9 @@ class CallActivity : ComponentActivity() {
                         if (CallManager.current.value == null) finish()
                     }
                 }
+
+                // „Zurück“ würde den Anruf-Bildschirm verlassen – dann fehlen Annehmen/Auflegen.
+                BackHandler(enabled = current != null) { }
 
                 val shown = current ?: last
                 if (shown != null) {
