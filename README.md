@@ -44,6 +44,13 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
 5. Optional: PIN vergeben, damit nichts versehentlich verstellt wird.
 6. Empfohlen: „ElPiFon als Telefon-App verwenden“ antippen und bestätigen. Erst dann
    erscheinen eingehende Anrufe im großen ElPiFon-Bildschirm.
+   **Ab Android 15** (z. B. Moto G85) sperrt Android das für Apps, die nicht aus dem Play Store
+   kommen. Einmalig freischalten:
+   1. Einmal versuchen, ElPiFon als Telefon-App zu wählen (Einstellungen → Apps →
+      Standard-Apps → Telefon-App). Die Meldung „Eingeschränkte Einstellung“ wegtippen.
+   2. Einstellungen → Apps → ElPiFon → oben rechts ⋮ → „Eingeschränkte Einstellungen
+      zulassen“ und mit PIN/Fingerabdruck bestätigen.
+   3. ElPiFon erneut als Telefon-App wählen.
 7. Optional: „ElPiFon als Startbildschirm“ einschalten und in der Android-Auswahl ElPiFon
    wählen („Immer“).
 8. **Notruf und einen eingehenden Anruf einmal ausprobieren** (vorher den Notfallkontakt informieren).
