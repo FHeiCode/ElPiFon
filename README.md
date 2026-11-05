@@ -11,7 +11,15 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
 - **Roter Notruf-Knopf**: 2 Sekunden gedrückt halten (verhindert versehentliches Auslösen)
   - SMS an alle Notfallkontakte, auf Wunsch mit Standort-Link (Google Maps)
   - ist der bekannte Standort älter als 10 Minuten, wird ein aktueller gesucht und nachgeschickt
-  - danach Anruf beim obersten Notfallkontakt
+  - danach werden die Notfallkontakte **der Reihe nach** angerufen (Reihenfolge wie in den
+    Einstellungen). Nimmt jemand nicht innerhalb von 1 Minute ab, legt ElPiFon auf und ruft
+    den Nächsten an. Sobald jemand abnimmt, endet die Kette. Nach dem letzten Kontakt hört
+    sie auf. Wer selbst auflegt, beendet die Kette ebenfalls.
+  - Achtung Mailbox: Nimmt die Mailbox eines Notfallkontakts ab, zählt das für das Handy als
+    „angenommen“ – die Kette endet dort. Notfallkontakte sollten ihre Mailbox deshalb
+    abschalten oder (falls der Anbieter es erlaubt) erst nach mehr als 1 Minute annehmen lassen.
+  - Die Kette funktioniert nur, wenn ElPiFon die Telefon-App ist; sonst wird nur der
+    erste Notfallkontakt angerufen
   - ohne eingerichteten Notfallkontakt: Anruf bei der 112 (ist ElPiFon nicht die Telefon-App,
     öffnet sich die normale Telefon-App mit vorgewählter 112)
 - **Einstellungen für Angehörige** (unten „⚙ Einstellungen“ lange drücken), optional mit PIN:
@@ -39,8 +47,8 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
    Ohne Anruf-Berechtigung öffnet sich beim Antippen nur die Wähl-App (dann grünen Hörer tippen).
 3. Unten „⚙ Einstellungen“ **lange drücken** → „Kontakt hinzufügen“.
    Tipp: „Aus dem Telefonbuch übernehmen“ füllt Name, Nummer und Foto aus.
-4. Mindestens einen Kontakt als **Notfallkontakt** markieren. Der oberste Notfallkontakt wird
-   beim Notruf angerufen – mit den Pfeilen nach oben sortieren.
+4. Mindestens einen Kontakt als **Notfallkontakt** markieren. Beim Notruf werden die
+   Notfallkontakte von oben nach unten angerufen – mit den Pfeilen sortieren.
 5. Optional: PIN vergeben, damit nichts versehentlich verstellt wird.
 6. Empfohlen: „ElPiFon als Telefon-App verwenden“ antippen und bestätigen. Erst dann
    erscheinen eingehende Anrufe im großen ElPiFon-Bildschirm.
@@ -90,6 +98,7 @@ app/src/main/java/de/elpifon/app/
 ├── MainActivity.kt           Einstieg, Berechtigungen, Navigation, PIN-Abfrage
 ├── call/
 │   ├── ElInCallService.kt    Von Android gemeldete Anrufe (nur als Telefon-App)
+│   ├── EmergencyChain.kt     Notruf-Kette: der Reihe nach anrufen, 1 Minute warten
 │   ├── CallManager.kt        Zustand des Gesprächs, Annehmen/Ablehnen/Auflegen
 │   ├── CallActivity.kt       Anruf-Vollbild, Sperrbildschirm, Näherungssensor
 │   └── DialerActivity.kt     Unsichtbar: Wähl-Anfragen anderer Apps

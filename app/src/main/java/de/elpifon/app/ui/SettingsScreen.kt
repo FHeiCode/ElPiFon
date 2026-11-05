@@ -113,7 +113,7 @@ fun SettingsScreen(
             }
             item {
                 Text(
-                    "Notfallkontakte (⚠) bekommen beim Notruf eine SMS; der oberste wird angerufen.",
+                    "Notfallkontakte (⚠) bekommen beim Notruf eine SMS und werden von oben nach unten angerufen. Nimmt jemand nach 1 Minute nicht ab, kommt der Nächste dran.",
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                 )

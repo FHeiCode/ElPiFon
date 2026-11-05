@@ -34,7 +34,10 @@ object CallManager {
     val settings = MutableStateFlow(AppSettings())
 
     private val callback = object : Call.Callback() {
-        override fun onStateChanged(call: Call, state: Int) = refresh()
+        override fun onStateChanged(call: Call, state: Int) {
+            EmergencyChain.onStateChanged(call, state)
+            refresh()
+        }
         override fun onDetailsChanged(call: Call, details: Call.Details) = refresh()
     }
 
@@ -46,6 +49,7 @@ object CallManager {
         call = newCall
         newCall.registerCallback(callback)
         refresh()
+        EmergencyChain.onCallAdded(newCall)
     }
 
     fun remove(removed: Call) {
@@ -53,6 +57,7 @@ object CallManager {
         removed.unregisterCallback(callback)
         call = null
         refresh()
+        EmergencyChain.onCallRemoved(removed)
     }
 
     @Suppress("DEPRECATION")
@@ -78,7 +83,9 @@ object CallManager {
         call?.reject(false, null)
     }
 
+    /** Selbst aufgelegt – auch eine laufende Notruf-Kette endet damit. */
     fun hangUp() {
+        EmergencyChain.stop()
         call?.disconnect()
     }
 }
