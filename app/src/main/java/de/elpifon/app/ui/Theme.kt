@@ -41,7 +41,7 @@ object Signal {
     val hint = Color(0xFFFFE082)
     val onHint = Color(0xFF111111)
 
-    /** Farbe aller Wähltasten (mit dünnem weißem Rand). */
+    /** Farbe aller Wähltasten. */
     val tile = Color(0xFF1565C0)
 
     /** Hintergrundfarben für Kontakte ohne Foto (Anfangsbuchstabe im Kreis). */

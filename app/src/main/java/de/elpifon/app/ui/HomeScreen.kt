@@ -19,9 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import de.elpifon.app.R
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -210,9 +208,7 @@ private fun Header() {
         Text(
             text = buildAnnotatedString {
                 append("by Frank")
-                if (version.isNotEmpty()) {
-                    withStyle(SpanStyle(fontSize = 12.sp)) { append(" v$version") }
-                }
+                if (version.isNotEmpty()) append(" v$version")
             },
             fontSize = 16.sp,
             maxLines = 1,
@@ -223,7 +219,7 @@ private fun Header() {
     }
 }
 
-/** Blaue Wähltaste mit weißem Rand und 3D-Effekt – nur der Name, ohne Bild. */
+/** Blaue Wähltaste im gleichen 3D-Stil wie der Notruf-Knopf – nur der Name, ohne Bild. */
 @Composable
 private fun ContactTile(contact: Contact, modifier: Modifier = Modifier, onClick: () -> Unit) {
     val interaction = remember { MutableInteractionSource() }
@@ -231,8 +227,6 @@ private fun ContactTile(contact: Contact, modifier: Modifier = Modifier, onClick
     Raised3D(
         color = Signal.tile,
         pressed = pressed,
-        borderColor = Color.White,
-        borderWidth = 2.dp,
         modifier = modifier
             .heightIn(min = 92.dp)
             .clickable(interactionSource = interaction, indication = null, onClick = onClick)
