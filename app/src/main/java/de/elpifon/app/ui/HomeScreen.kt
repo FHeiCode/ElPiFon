@@ -25,6 +25,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import de.elpifon.app.R
+import androidx.compose.ui.res.painterResource
+import androidx.compose.material3.Icon
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -79,6 +83,8 @@ fun HomeScreen(
             .safeDrawingPadding()
             .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
+        Header()
+
         if (ongoingCall) {
             Text(
                 text = "Gespräch läuft – hier tippen",
@@ -148,6 +154,27 @@ fun HomeScreen(
         SettingsLink(
             onShortTap = { hint = "Einstellungen: bitte lange drücken." },
             onLongPress = onOpenSettings,
+        )
+    }
+}
+
+/** Kopfzeile: geschwungener Schriftzug „ElPi“, darunter klein „by Frank“. */
+@Composable
+private fun Header() {
+    Column(
+        Modifier.fillMaxWidth().padding(top = 4.dp, bottom = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.elpi_wordmark),
+            contentDescription = "ElPi",
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.height(48.dp).width(96.dp),
+        )
+        Text(
+            text = "by Frank",
+            fontSize = 16.sp,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f),
         )
     }
 }

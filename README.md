@@ -5,6 +5,7 @@
 Android-App (Kotlin, Jetpack Compose), die das Handy in ein übersichtliches Senioren-Telefon
 verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
 
+- Oben der geschwungene Schriftzug **„ElPi“**, darunter klein „by Frank“
 - **Große Kontakt-Kacheln** mit Foto oder Anfangsbuchstaben – einmal antippen, und der
   Anruf startet sofort
 - **Roter Notruf-Knopf**: 2 Sekunden gedrückt halten (verhindert versehentliches Auslösen)
@@ -60,6 +61,11 @@ Hinweise:
   bietet ElPiFon nicht; dafür bei Bedarf in den Einstellungen wieder zurückstellen
   („Wieder andere Telefon-App verwenden“).
 - Eine App ersetzt keinen Hausnotruf-Dienst.
+
+## Schriftzug
+
+Der Schriftzug „ElPi“ ist als Vektorpfad eingebettet (`res/drawable/elpi_wordmark.xml`) und
+stammt aus der Schrift **Dancing Script** (SIL Open Font License 1.1, Google Fonts).
 
 ## Datenschutz
 
