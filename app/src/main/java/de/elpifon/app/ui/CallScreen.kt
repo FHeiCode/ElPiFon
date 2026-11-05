@@ -88,6 +88,14 @@ fun CallScreen(
             lineHeight = 46.sp,
             color = MaterialTheme.colorScheme.onBackground,
         )
+        if (call.isRinging && !ended) {
+            Text(
+                text = "ruft an",
+                fontSize = 34.sp,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+        }
         Spacer(Modifier.weight(1f))
 
         when {

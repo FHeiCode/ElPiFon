@@ -17,7 +17,7 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
   Kontakte anlegen (auch direkt aus dem Telefonbuch, inkl. Foto), sortieren, bearbeiten,
   löschen; Notruf-Text; Standort an/aus
 - **Eigener Anruf-Bildschirm** (wenn ElPiFon als Telefon-App gewählt ist):
-  - eingehend: nur Foto und Name (unbekannt: die Nummer), zwei riesige Tasten **Annehmen** (grün)
+  - eingehend: Foto und „Name ruft an“ (unbekannt: die Nummer), zwei riesige Tasten **Annehmen** (grün)
     und **Ablehnen** (rot) – antippen statt wischen, auch auf dem Sperrbildschirm
   - im Gespräch: nur Foto, Name und eine große Taste **Auflegen**; am Ohr schaltet sich
     der Bildschirm ab (Näherungssensor)
