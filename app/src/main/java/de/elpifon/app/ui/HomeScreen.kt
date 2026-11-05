@@ -160,7 +160,7 @@ fun HomeScreen(
     }
 }
 
-/** Kopfzeile: geschwungener Schriftzug „ElPi“, rechts daneben unten bündig klein „by Frank“. */
+/** Kopfzeile: geschwungener Schriftzug „ElPiFon“, rechts daneben unten bündig klein „by Frank“. */
 @Composable
 private fun Header() {
     Row(
@@ -170,10 +170,10 @@ private fun Header() {
     ) {
         Icon(
             painter = painterResource(R.drawable.elpi_wordmark),
-            contentDescription = "ElPi",
+            contentDescription = "ElPiFon",
             // Schwarz (im dunklen Modus weiß, damit es lesbar bleibt).
             tint = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.height(48.dp).width(96.dp),
+            modifier = Modifier.height(44.dp).width(155.dp),
         )
         Text(
             text = "by Frank",
