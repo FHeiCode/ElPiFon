@@ -219,7 +219,7 @@ private fun Header() {
     }
 }
 
-/** Blaue Wähltaste im gleichen 3D-Stil wie der Notruf-Knopf – nur der Name, ohne Bild. */
+/** Wähltaste (Petrol) im gleichen 3D-Stil wie der Notruf-Knopf – nur der Name, ohne Bild. */
 @Composable
 private fun ContactTile(contact: Contact, modifier: Modifier = Modifier, onClick: () -> Unit) {
     val interaction = remember { MutableInteractionSource() }

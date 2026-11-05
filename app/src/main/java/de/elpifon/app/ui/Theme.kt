@@ -42,7 +42,7 @@ object Signal {
     val onHint = Color(0xFF111111)
 
     /** Farbe aller Wähltasten. */
-    val tile = Color(0xFF1565C0)
+    val tile = Color(0xFF3E6E70) // Petrol
 
     /** Hintergrundfarben für Kontakte ohne Foto (Anfangsbuchstabe im Kreis). */
     val avatars = listOf(

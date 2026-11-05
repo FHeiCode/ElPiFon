@@ -6,7 +6,7 @@ Android-App (Kotlin, Jetpack Compose), die das Handy in ein übersichtliches Sen
 verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
 
 - Oben links das runde Logo, daneben der geschwungene Schriftzug **„ElPiFon“** und klein „by Frank“ mit Versionsnummer
-- **Blaue Wähltasten** mit 3D-Effekt (gleicher Stil wie der Notruf-Knopf), je zwei nebeneinander – nur der
+- **Wähltasten in Petrol** mit 3D-Effekt (gleicher Stil wie der Notruf-Knopf), je zwei nebeneinander – nur der
   Name, ohne Bild. Einmal antippen, und der Anruf startet sofort. Lange Namen brechen auf zwei
   Zeilen um, die Nachbartaste wird dann gleich hoch. Das Kontaktfoto erscheint nur beim Anruf
 - **Roter Notruf-Knopf**: 2 Sekunden gedrückt halten (verhindert versehentliches Auslösen)
