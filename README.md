@@ -61,6 +61,12 @@ Hinweise:
   („Wieder andere Telefon-App verwenden“).
 - Eine App ersetzt keinen Hausnotruf-Dienst.
 
+## Logo
+
+Telefonhörer mit Herz und Schriftzug „ElPi“. Der Schriftzug ist als Vektorpfad eingebettet und
+stammt aus der Schrift **Dancing Script** (SIL Open Font License 1.1, Google Fonts). Der Hörer
+basiert auf den Material Icons (Apache 2.0).
+
 ## Datenschutz
 
 ElPiFon hat **keine Internet-Berechtigung**. Das Telefonbuch wird nur gelesen, um Anrufer-Namen anzuzeigen. Kontakte, Fotos und Einstellungen bleiben auf dem
