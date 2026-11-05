@@ -1,6 +1,5 @@
 package de.elpifon.app.ui
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -14,16 +13,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import de.elpifon.app.R
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.IconButton
 import androidx.compose.foundation.Image
 import androidx.compose.material.icons.filled.MoreVert
@@ -137,17 +140,30 @@ fun HomeScreen(
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.align(Alignment.Center).padding(16.dp),
                 )
-                else -> LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                else -> LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(vertical = 4.dp),
                     modifier = Modifier.fillMaxSize(),
                 ) {
-                    items(contacts, key = { it.id }) { contact ->
-                        ContactTile(contact) {
-                            hint = "${contact.name} wird angerufen …"
-                            onCall(contact)
+                    // Je zwei Tasten nebeneinander. Bricht ein Name auf 2 Zeilen um,
+                    // wird die Nachbartaste gleich hoch.
+                    val rows = contacts.chunked(2)
+                    itemsIndexed(rows, key = { _, row -> row.joinToString { it.id } }) { rowIndex, row ->
+                        Row(
+                            Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        ) {
+                            row.forEachIndexed { i, contact ->
+                                ContactTile(
+                                    contact = contact,
+                                    color = Signal.tileColor(rowIndex * 2 + i),
+                                    modifier = Modifier.weight(1f).fillMaxHeight(),
+                                ) {
+                                    hint = "${contact.name} wird angerufen …"
+                                    onCall(contact)
+                                }
+                            }
+                            if (row.size == 1) Spacer(Modifier.weight(1f))
                         }
                     }
                 }
@@ -194,37 +210,31 @@ private fun Header() {
     }
 }
 
+/** Farbige Namenstaste mit 3D-Effekt – nur der Name, ohne Bild. */
 @Composable
-private fun ContactTile(contact: Contact, onClick: () -> Unit) {
-    Card(
-        onClick = onClick,
-        shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = BorderStroke(2.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.35f)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(220.dp)
+private fun ContactTile(contact: Contact, color: Color, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
+    Raised3D(
+        color = color,
+        pressed = pressed,
+        modifier = modifier
+            .heightIn(min = 92.dp)
+            .clickable(interactionSource = interaction, indication = null, onClick = onClick)
             .semantics { contentDescription = "${contact.name} anrufen" },
     ) {
-        Column(
-            Modifier.fillMaxSize().padding(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            ContactAvatar(contact.name, contact.photo, size = 130.dp)
-            Spacer(Modifier.height(10.dp))
-            Text(
-                text = contact.name,
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                lineHeight = 26.sp,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-        }
+        Text(
+            text = contact.name,
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            lineHeight = 31.sp,
+            color = Color.White,
+            style = TextStyle(shadow = TextOnColorShadow),
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 14.dp),
+        )
     }
 }
 
@@ -236,13 +246,13 @@ private fun EmergencyButton(onTrigger: () -> Unit, onShortTap: () -> Unit) {
     val scope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
 
-    Box(
-        contentAlignment = Alignment.Center,
+    Raised3D(
+        color = Signal.emergency,
+        pressed = remaining != null,
+        corner = 24.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .height(116.dp)
-            .clip(RoundedCornerShape(24.dp))
-            .background(Signal.emergency)
+            .height(122.dp)
             .semantics {
                 contentDescription = "Notruf. $HOLD_SECONDS Sekunden gedrückt halten."
                 role = Role.Button
@@ -276,6 +286,7 @@ private fun EmergencyButton(onTrigger: () -> Unit, onShortTap: () -> Unit) {
                 color = Signal.onEmergency,
                 fontSize = 36.sp,
                 fontWeight = FontWeight.ExtraBold,
+                style = TextStyle(shadow = TextOnColorShadow),
             )
             Text(
                 text = "$HOLD_SECONDS Sekunden gedrückt halten",
