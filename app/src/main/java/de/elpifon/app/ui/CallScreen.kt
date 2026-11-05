@@ -45,7 +45,7 @@ private val Green = Color(0xFF2E7D32)
 
 /**
  * Anruf-Bildschirm: nur Foto, Name und große Tasten.
- * Klingelt es → Annehmen (nicht angenommen → Mailbox), im Gespräch → Auflegen, danach schließt er sich.
+ * Klingelt es → Ablehnen/Annehmen, im Gespräch → Auflegen, danach schließt er sich.
  */
 @Composable
 fun CallScreen(
@@ -53,6 +53,7 @@ fun CallScreen(
     ended: Boolean,
     contacts: List<Contact>,
     onAnswer: () -> Unit,
+    onReject: () -> Unit,
     onHangUp: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -91,7 +92,10 @@ fun CallScreen(
 
         when {
             ended -> Unit
-            call.isRinging -> BigCallButton("Annehmen", Icons.Filled.Call, Green, Modifier.fillMaxWidth(), onAnswer)
+            call.isRinging -> Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                BigCallButton("Ablehnen", Icons.Filled.CallEnd, Signal.emergency, Modifier.weight(1f), onReject)
+                BigCallButton("Annehmen", Icons.Filled.Call, Green, Modifier.weight(1f), onAnswer)
+            }
             else -> BigCallButton("Auflegen", Icons.Filled.CallEnd, Signal.emergency, Modifier.fillMaxWidth(), onHangUp)
         }
         Spacer(Modifier.height(12.dp))

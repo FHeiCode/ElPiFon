@@ -74,6 +74,10 @@ object CallManager {
         call?.answer(VideoProfile.STATE_AUDIO_ONLY)
     }
 
+    fun reject() {
+        call?.reject(false, null)
+    }
+
     fun hangUp() {
         call?.disconnect()
     }

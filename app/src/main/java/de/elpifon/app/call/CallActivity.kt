@@ -59,6 +59,7 @@ class CallActivity : ComponentActivity() {
                         ended = current == null || current?.state == Call.STATE_DISCONNECTED,
                         contacts = contacts,
                         onAnswer = CallManager::answer,
+                        onReject = CallManager::reject,
                         onHangUp = CallManager::hangUp,
                     )
                 }

@@ -17,9 +17,8 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
   Kontakte anlegen (auch direkt aus dem Telefonbuch, inkl. Foto), sortieren, bearbeiten,
   löschen; Notruf-Text; Standort an/aus
 - **Eigener Anruf-Bildschirm** (wenn ElPiFon als Telefon-App gewählt ist):
-  - eingehend: nur Foto und Name (unbekannt: die Nummer), eine riesige grüne Taste **Annehmen** –
-    antippen statt wischen, auch auf dem Sperrbildschirm. Wer nicht annimmt, landet nach
-    dem Klingeln wie gewohnt auf der Mailbox
+  - eingehend: nur Foto und Name (unbekannt: die Nummer), zwei riesige Tasten **Annehmen** (grün)
+    und **Ablehnen** (rot) – antippen statt wischen, auch auf dem Sperrbildschirm
   - im Gespräch: nur Foto, Name und eine große Taste **Auflegen**; am Ohr schaltet sich
     der Bildschirm ab (Näherungssensor)
   - bewusst ohne Anklopfen, Lautsprecher und Stummschalten: Wer während eines Gesprächs
@@ -85,7 +84,7 @@ app/src/main/java/de/elpifon/app/
 ├── MainActivity.kt           Einstieg, Berechtigungen, Navigation, PIN-Abfrage
 ├── call/
 │   ├── ElInCallService.kt    Von Android gemeldete Anrufe (nur als Telefon-App)
-│   ├── CallManager.kt        Zustand des Gesprächs, Annehmen/Auflegen
+│   ├── CallManager.kt        Zustand des Gesprächs, Annehmen/Ablehnen/Auflegen
 │   ├── CallActivity.kt       Anruf-Vollbild, Sperrbildschirm, Näherungssensor
 │   └── DialerActivity.kt     Unsichtbar: Wähl-Anfragen anderer Apps
 ├── data/
