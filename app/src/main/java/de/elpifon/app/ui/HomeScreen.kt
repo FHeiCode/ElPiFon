@@ -26,6 +26,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import de.elpifon.app.R
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.Icons
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.Row
 import androidx.compose.ui.res.painterResource
@@ -85,7 +89,14 @@ fun HomeScreen(
             .safeDrawingPadding()
             .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
-        Header()
+        Box(Modifier.fillMaxWidth()) {
+            Header()
+            SettingsMenu(
+                onShortTap = { hint = "Einstellungen: bitte lange drücken." },
+                onLongPress = onOpenSettings,
+                modifier = Modifier.align(Alignment.TopEnd),
+            )
+        }
 
         if (ongoingCall) {
             Text(
@@ -124,7 +135,7 @@ fun HomeScreen(
             when {
                 contacts == null -> Unit // lädt noch
                 contacts.isEmpty() -> Text(
-                    text = "Noch keine Kontakte.\n\nFür Angehörige: unten auf „Einstellungen“ " +
+                    text = "Noch keine Kontakte.\n\nFür Angehörige: oben rechts auf ⋮ " +
                         "lange drücken und Kontakte hinzufügen.",
                     fontSize = 22.sp,
                     textAlign = TextAlign.Center,
@@ -151,11 +162,6 @@ fun HomeScreen(
         EmergencyButton(
             onTrigger = { hint = onEmergency() },
             onShortTap = { hint = "Für einen Notruf den roten Knopf $HOLD_SECONDS Sekunden gedrückt halten." },
-        )
-
-        SettingsLink(
-            onShortTap = { hint = "Einstellungen: bitte lange drücken." },
-            onLongPress = onOpenSettings,
         )
     }
 }
@@ -277,19 +283,26 @@ private fun EmergencyButton(onTrigger: () -> Unit, onShortTap: () -> Unit) {
     }
 }
 
+/**
+ * Drei Punkte oben rechts. Öffnet die Einstellungen erst bei langem Drücken –
+ * so verstellt niemand versehentlich etwas.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun SettingsLink(onShortTap: () -> Unit, onLongPress: () -> Unit) {
-    Text(
-        text = "⚙ Einstellungen",
-        fontSize = 16.sp,
-        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f),
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 6.dp)
-            .clip(RoundedCornerShape(12.dp))
+private fun SettingsMenu(onShortTap: () -> Unit, onLongPress: () -> Unit, modifier: Modifier = Modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+            .size(48.dp)
+            .clip(CircleShape)
             .combinedClickable(onClick = onShortTap, onLongClick = onLongPress)
-            .padding(10.dp),
-    )
+            .semantics { contentDescription = "Einstellungen (lange drücken)" },
+    ) {
+        Icon(
+            Icons.Filled.MoreVert,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.55f),
+            modifier = Modifier.size(28.dp),
+        )
+    }
 }

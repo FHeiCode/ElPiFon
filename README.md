@@ -27,7 +27,7 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
     erste Notfallkontakt angerufen
   - ohne eingerichteten Notfallkontakt: Anruf bei der 112 (ist ElPiFon nicht die Telefon-App,
     öffnet sich die normale Telefon-App mit vorgewählter 112)
-- **Einstellungen für Angehörige** (unten „⚙ Einstellungen“ lange drücken), optional mit PIN:
+- **Einstellungen für Angehörige** (oben rechts auf ⋮ lange drücken), optional mit PIN:
   Kontakte anlegen (auch direkt aus dem Telefonbuch, inkl. Foto), sortieren, bearbeiten,
   löschen; Notruf-Text; Standort an/aus
 - **Eigener Anruf-Bildschirm** (wenn ElPiFon als Telefon-App gewählt ist):
@@ -50,7 +50,7 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
 1. APK installieren (siehe unten) und ElPiFon öffnen.
 2. Die Fragen nach **Telefonanrufen, SMS und Standort** mit „Zulassen“ beantworten.
    Ohne Anruf-Berechtigung öffnet sich beim Antippen nur die Wähl-App (dann grünen Hörer tippen).
-3. Unten „⚙ Einstellungen“ **lange drücken** → „Kontakt hinzufügen“.
+3. Oben rechts auf **⋮ lange drücken** → „Kontakt hinzufügen“.
    Tipp: „Aus dem Telefonbuch übernehmen“ füllt Name, Nummer und Foto aus.
 4. Mindestens einen Kontakt als **Notfallkontakt** markieren. Beim Notruf werden die
    Notfallkontakte von oben nach unten angerufen – mit den Pfeilen sortieren.
