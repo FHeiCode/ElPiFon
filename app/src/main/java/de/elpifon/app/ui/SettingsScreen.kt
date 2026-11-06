@@ -114,7 +114,7 @@ fun SettingsScreen(
             }
             item {
                 Text(
-                    "Notfallkontakte (⚠) bekommen beim Notruf eine SMS und werden von oben nach unten angerufen. Nimmt jemand nicht ab, kommt der Nächste dran (Einstellungen unter „Notruf“).",
+                    "Notfallkontakte (⚠) werden beim Notruf von oben nach unten angerufen und bekommen eine SMS, falls beim Kontakt eingeschaltet (bei Festnetz aus). Nimmt jemand nicht ab, kommt der Nächste dran (Einstellungen unter „Notruf“).",
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                 )

@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.elpifon.app.data.Contact
 import de.elpifon.app.data.Photos
+import de.elpifon.app.data.looksLikeMobile
 import kotlinx.coroutines.launch
 
 /** Kontakt anlegen oder bearbeiten. [existing] = null legt einen neuen an. */
@@ -70,6 +71,7 @@ fun ContactEditScreen(
     var number by remember { mutableStateOf(existing?.number ?: "") }
     var photo by remember { mutableStateOf(existing?.photo) }
     var emergency by remember { mutableStateOf(existing?.emergency ?: false) }
+    var emergencySms by remember { mutableStateOf(existing?.emergencySms ?: true) }
     var busy by remember { mutableStateOf(false) }
     var confirmDelete by remember { mutableStateOf(false) }
 
@@ -184,14 +186,32 @@ fun ContactEditScreen(
             }
 
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(checked = emergency, onCheckedChange = { emergency = it })
+                Checkbox(checked = emergency, onCheckedChange = {
+                    emergency = it
+                    // Beim Einschalten vorschlagen: SMS nur an Handynummern.
+                    if (it) emergencySms = looksLikeMobile(number)
+                })
                 Column {
                     Text("Notfallkontakt", fontSize = 18.sp)
                     Text(
-                        "Bekommt beim Notruf eine SMS (mit Standort).",
+                        "Wird beim Notruf angerufen.",
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                     )
+                }
+            }
+            if (emergency) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 32.dp)) {
+                    Checkbox(checked = emergencySms, onCheckedChange = { emergencySms = it })
+                    Column {
+                        Text("Notruf-SMS senden", fontSize = 18.sp)
+                        Text(
+                            if (emergencySms || looksLikeMobile(number)) "Bekommt beim Notruf zusätzlich eine SMS (mit Standort)."
+                            else "Aus – bei Festnetznummern kommt eine SMS meist nicht an.",
+                            fontSize = 14.sp,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                        )
+                    }
                 }
             }
 
@@ -202,6 +222,7 @@ fun ContactEditScreen(
                         number = number.trim(),
                         photo = photo,
                         emergency = emergency,
+                        emergencySms = emergencySms,
                     )
                     // Zwischendurch gewählte, aber nicht genommene Fotos aufräumen.
                     unsavedPhotos.filter { it != photo }.forEach { Photos.delete(context, it) }

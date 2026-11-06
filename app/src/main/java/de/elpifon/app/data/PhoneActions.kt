@@ -99,8 +99,8 @@ object PhoneActions {
     }
 
     /**
-     * Notruf: SMS an alle Notfallkontakte (mit Standort, falls erlaubt), danach Anruf beim
-     * ersten Notfallkontakt. Gibt einen kurzen Text zurück, was passiert ist.
+     * Notruf: SMS an die Notfallkontakte, bei denen „Notruf-SMS senden“ an ist (mit Standort,
+     * falls erlaubt), danach Anruf beim ersten Notfallkontakt. Gibt einen kurzen Text zurück, was passiert ist.
      */
     fun triggerEmergency(context: Context, contacts: List<Contact>, settings: AppSettings): String {
         val targets = contacts.filter { it.emergency }
@@ -109,8 +109,9 @@ object PhoneActions {
             else "Kein Notfallkontakt eingerichtet – die 112 ist vorgewählt."
         }
 
+        val smsTargets = targets.filter { it.emergencySms }
         var smsSent = false
-        if (granted(context, Manifest.permission.SEND_SMS)) {
+        if (smsTargets.isNotEmpty() && granted(context, Manifest.permission.SEND_SMS)) {
             val location = if (settings.sendLocation) lastLocation(context) else null
             val text = buildString {
                 append("NOTRUF: ").append(settings.emergencyText)
@@ -121,12 +122,12 @@ object PhoneActions {
                     append(": ").append(mapsLink(location))
                 }
             }
-            smsSent = targets.map { sendSms(context, it.number, text) }.any { it }
+            smsSent = smsTargets.map { sendSms(context, it.number, text) }.any { it }
 
             // Ist der bekannte Standort alt oder fehlt er, wird ein aktueller gesucht und nachgeschickt.
             if (settings.sendLocation && (location == null || System.currentTimeMillis() - location.time > 10 * 60_000)) {
                 requestFreshLocation(context) { fresh ->
-                    targets.forEach { sendSms(context, it.number, "NOTRUF – aktueller Standort: ${mapsLink(fresh)}") }
+                    smsTargets.forEach { sendSms(context, it.number, "NOTRUF – aktueller Standort: ${mapsLink(fresh)}") }
                 }
             }
         }
@@ -137,9 +138,12 @@ object PhoneActions {
             context, targets.map { it.number }, settings.emergencyWaitSeconds, settings.emergencyRounds,
         )
         if (!chained) call(context, targets.first().number)
-        val names = targets.joinToString { it.name }
-        return if (smsSent) "Notruf-SMS an $names gesendet. ${targets.first().name} wird angerufen."
-        else "${targets.first().name} wird angerufen. (SMS nicht erlaubt)"
+        val first = "${targets.first().name} wird angerufen."
+        return when {
+            smsSent -> "Notruf-SMS an ${smsTargets.joinToString { it.name }} gesendet. $first"
+            smsTargets.isEmpty() -> first
+            else -> "$first (SMS nicht erlaubt)"
+        }
     }
 
     private fun mapsLink(l: Location) =
