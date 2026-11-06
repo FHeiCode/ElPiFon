@@ -11,9 +11,23 @@ data class Contact(
     val number: String,
     /** Dateiname des Fotos im internen App-Speicher (Ordner "fotos"), oder null. */
     val photo: String? = null,
-    /** Notfallkontakte bekommen beim Notruf eine SMS; der erste wird angerufen. */
+    /** Notfallkontakte werden beim Notruf der Reihe nach angerufen. */
     val emergency: Boolean = false,
+    /** Notfallkontakt bekommt beim Notruf zusätzlich eine SMS (bei Festnetz abschalten). */
+    val emergencySms: Boolean = true,
 )
+
+/** Deutsche Handynummern beginnen mit 015, 016 oder 017 (auch +49 / 0049). */
+fun looksLikeMobile(number: String): Boolean {
+    val digits = number.filter { it.isDigit() }
+    val national = when {
+        number.trim().startsWith("+49") -> "0" + digits.removePrefix("49")
+        digits.startsWith("0049") -> "0" + digits.removePrefix("0049")
+        number.trim().startsWith("+") || digits.startsWith("00") -> return true // Ausland: nicht raten
+        else -> digits
+    }
+    return national.startsWith("015") || national.startsWith("016") || national.startsWith("017")
+}
 
 /** Einstellungen, die Angehörige festlegen. */
 @Serializable

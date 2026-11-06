@@ -10,7 +10,9 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
   Name, ohne Bild. Einmal antippen, und der Anruf startet sofort. Lange Namen brechen auf zwei
   Zeilen um, die Nachbartaste wird dann gleich hoch. Das Kontaktfoto erscheint nur beim Anruf
 - **Roter Notruf-Knopf**: 2 Sekunden gedrückt halten (verhindert versehentliches Auslösen)
-  - SMS an alle Notfallkontakte, auf Wunsch mit Standort-Link (Google Maps)
+  - SMS an die Notfallkontakte, auf Wunsch mit Standort-Link (Google Maps). Pro Kontakt
+    abschaltbar („Notruf-SMS senden“) – sinnvoll bei Festnetznummern. Beim Markieren als
+    Notfallkontakt ist die SMS nur bei Handynummern (015…, 016…, 017…) vorab eingeschaltet
   - ist der bekannte Standort älter als 10 Minuten, wird ein aktueller gesucht und nachgeschickt
   - danach werden die Notfallkontakte **der Reihe nach** angerufen (Reihenfolge wie in den
     Einstellungen). Nimmt jemand nicht innerhalb der **Wartezeit** ab (Standard 20 Sekunden,
@@ -32,8 +34,10 @@ verwandelt. Alles ist groß, kontrastreich und mit einem Fingertipp erreichbar:
   Kontakte anlegen (auch direkt aus dem Telefonbuch, inkl. Foto), sortieren, bearbeiten,
   löschen; Notruf-Text; Standort an/aus
 - **Eigener Anruf-Bildschirm** (wenn ElPiFon als Telefon-App gewählt ist):
-  - eingehend: Foto und „Name ruft an“ (unbekannt: die Nummer), zwei riesige Tasten **Annehmen** (grün)
-    und **Ablehnen** (rot) – antippen statt wischen, auch auf dem Sperrbildschirm
+  - eingehend: Foto und „Name ruft an“ (unbekannt: die Nummer), darunter eine riesige grüne
+    Taste **Annehmen** – antippen statt wischen, auch auf dem Sperrbildschirm. Mit Abstand
+    darunter eine kleine graue Taste **Ablehnen**, die 2 Sekunden gedrückt gehalten werden
+    muss (wie der Notruf-Knopf), damit niemand aus Versehen ablehnt
   - im Gespräch: nur Foto, Name und eine große Taste **Auflegen**; am Ohr schaltet sich
     der Bildschirm ab (Näherungssensor)
   - bewusst ohne Anklopfen, Lautsprecher und Stummschalten: Wer während eines Gesprächs
